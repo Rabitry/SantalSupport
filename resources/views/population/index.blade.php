@@ -63,9 +63,7 @@
             transition: transform 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+        .card:hover { transform: translateY(-5px); }
 
         .card img {
             width: 100px;
@@ -77,17 +75,10 @@
         .circular { border-radius: 50%; }
         .rectangular { border-radius: 10%; }
 
-        .card h3 {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-        .card p {
-            margin: 2px 0;
-            font-size: 14px;
-            color: #555;
-        }
+        .card h3 { margin: 5px 0; font-size: 16px; }
+        .card p { margin: 2px 0; font-size: 14px; color: #555; }
 
-        /* Action Buttons */
+        /* Buttons */
         .btn {
             display: inline-block;
             margin: 5px 3px;
@@ -102,11 +93,9 @@
         .btn-delete { background: #dc3545; }
         .btn-more { background: #28a745; }
 
-        .btn:hover {
-            opacity: 0.8;
-        }
+        .btn:hover { opacity: 0.8; }
 
-        /* Modal Styles */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -132,20 +121,14 @@
             justify-content: space-between;
             align-items: center;
         }
-        .modal-header h3 {
-            margin: 0;
-        }
+        .modal-header h3 { margin: 0; }
         .close {
             color: #aaa;
             font-size: 24px;
             cursor: pointer;
         }
-        .close:hover {
-            color: black;
-        }
-        .modal-body {
-            text-align: center;
-        }
+        .close:hover { color: black; }
+        .modal-body { text-align: center; }
         .modal-body img {
             width: 120px;
             height: 120px;
@@ -153,26 +136,36 @@
             object-fit: cover;
             margin-bottom: 15px;
         }
-        .modal-body p {
-            font-size: 15px;
-            margin: 5px 0;
-        }
+        .modal-body p { font-size: 15px; margin: 5px 0; }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .card { width: 45%; }
-        }
-        @media (max-width: 600px) {
-            .card { width: 90%; }
-        }
+        @media (max-width: 900px) { .card { width: 45%; } }
+        @media (max-width: 600px) { .card { width: 90%; } }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
     <nav>
-        <a href="{{ route('population.create') }}">Add New Population</a>
-        <a href="{{ route('population.index') }}">View All Population</a>
+        @guest
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Register</a>
+        @else
+            @php
+                $userProfile = \App\Models\Population::where('user_login_id', Auth::id())->first();
+            @endphp
+
+            @if(!$userProfile)
+                <a href="{{ route('population.create') }}">Create Profile</a>
+            @else
+                <a href="{{ route('population.edit', $userProfile->id) }}">Update Profile</a>
+            @endif
+
+            <span style="margin-left:15px; color:#00bfff;">{{ Auth::user()->name }}</span>
+            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" style="background:none; border:none; color:white; margin-left:10px; cursor:pointer;">Logout</button>
+            </form>
+        @endguest
     </nav>
 
     <h2>All Population Records</h2>
@@ -215,18 +208,12 @@
 
                 <!-- Action Buttons -->
                 <a href="{{ route('population.edit', $p->id) }}" class="btn btn-edit">Edit</a>
-
                 <form action="{{ route('population.destroy', $p->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this profile?')">Delete</button>
                 </form>
-
-                <button class="btn btn-more" 
-                    data-info='@json($p)'
-                    onclick="showDetails(this)">
-                    More Details
-                </button>
+                <button class="btn btn-more" data-info='@json($p)' onclick="showDetails(this)">More Details</button>
             </div>
         @empty
             <p>No records found.</p>
@@ -258,7 +245,6 @@
     <script>
         function showDetails(button) {
             const p = JSON.parse(button.getAttribute('data-info'));
-
             document.getElementById('modalName').innerText = p.name || 'N/A';
             document.getElementById('modalSex').innerText = p.sex || 'N/A';
             document.getElementById('modalOccupation').innerText = p.occupation || 'N/A';
@@ -270,24 +256,13 @@
             document.getElementById('modalUpazila').innerText = p.upazila || 'N/A';
 
             const image = document.getElementById('modalImage');
-            if (p.profile_picture) {
-                image.src = '/storage/' + p.profile_picture;
-            } else {
-                image.src = 'https://via.placeholder.com/120';
-            }
-
+            image.src = p.profile_picture ? '/storage/' + p.profile_picture : 'https://via.placeholder.com/120';
             document.getElementById('detailsModal').style.display = 'block';
         }
-
-        function closeModal() {
-            document.getElementById('detailsModal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
+        function closeModal() { document.getElementById('detailsModal').style.display = 'none'; }
+        window.onclick = function(e) {
             const modal = document.getElementById('detailsModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
+            if (e.target === modal) modal.style.display = 'none';
         }
     </script>
 </body>

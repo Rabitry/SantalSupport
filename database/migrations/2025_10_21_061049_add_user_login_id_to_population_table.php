@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::table('populations', function (Blueprint $table) {
             $table->unsignedBigInteger('user_login_id')->nullable()->after('id'); // or after any column you want
+            $table->foreign('user_login_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
@@ -17,6 +18,7 @@ return new class extends Migration
     {
         Schema::table('populations', function (Blueprint $table) {
             $table->dropColumn('user_login_id');
+            $table->dropForeign(['user_login_id']);
         });
     }
 };

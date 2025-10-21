@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Population;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -64,6 +66,9 @@ class PopulationController extends Controller
         if ($request->hasFile('profile_picture')) {
             $validated['profile_picture'] = $request->file('profile_picture')->store('profiles', 'public');
         }
+
+        // Assign logged-in user ID
+        $validated['user_login_id'] = Auth::id();
 
         Population::create($validated);
 

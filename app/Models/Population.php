@@ -23,4 +23,9 @@ class Population extends Model
         'upazila',
         'user_login_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_login_id');
+    }
 }
