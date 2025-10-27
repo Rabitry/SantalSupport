@@ -17,6 +17,11 @@ class PopulationController extends Controller
     {
         $query = Population::query();
 
+        if ($request->filled('search_college')) {
+            $collegeTerm = $request->input('search_college');
+            $query->where('college_university', 'LIKE', "%{$collegeTerm}%");
+        }
+
         // Search functionality - FIXED
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;

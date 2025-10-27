@@ -91,7 +91,14 @@ class AuthenticatedSessionController extends Controller
             ])->onlyInput('email');
         }
 
-        return redirect()->intended(route('population.index', absolute: false));
+        //return redirect()->intended(route('population.index', absolute: false));
+        //return redirect()->intended(route('dashboard.index', absolute: false));
+        //return redirect()->intended(route('dashboard', absolute: false));
+        if ($user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        } else {
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     /**

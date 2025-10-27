@@ -10,7 +10,7 @@ class Complaint extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id', 'user_id', 'reason', 'status', 'admin_notes'];
+    protected $fillable = ['post_id', 'user_id', 'reason', 'description', 'status'];
 
     public function post()
     {

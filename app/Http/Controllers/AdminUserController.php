@@ -105,11 +105,16 @@ class AdminUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:user,admin',
-            'student_id' => 'nullable|string|max:50|unique:users,student_id,' . $user->id,
-            'national_id' => 'required|string|max:50|unique:users,national_id,' . $user->id,
+            //'student_id' => 'nullable|string|max:50|unique:users,student_id,' . $user->id,
+            //'national_id' => 'required|string|max:50|unique:users,national_id,' . $user->id,
         ]);
 
-        $user->update($request->only('name', 'email', 'role', 'student_id', 'national_id'));
+        //$user->update($request->only('name', 'email', 'role', 'student_id', 'national_id'));
+         $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role, // This updates the role
+        ]);
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     }
