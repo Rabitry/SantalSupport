@@ -1,5 +1,10 @@
 <?php
 
+
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdminPostController;   
+use App\Http\Controllers\CommentController; 
+use App\Http\Controllers\ComplaintController;   
 use App\Http\Controllers\PopulationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
@@ -120,6 +125,28 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
             'userStats'
         ));
     })->name('statistics');
+});
+
+// Route::resource('posts', PostController::class);
+// Route::resource('comments', CommentController::class);
+// Route::resource('complaints', ComplaintController::class);
+
+// routes/web.php
+// routes/web.php
+
+// Public post routes
+Route::resource('posts', PostController::class);
+Route::get('/my-posts', [PostController::class, 'myPosts'])->name('posts.my-posts');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+// Admin post routes - SIMPLIFIED
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/complaints', [AdminPostController::class, 'complaints'])->name('posts.complaints');
+    Route::get('/posts/{id}', [AdminPostController::class, 'show'])->name('posts.show');
+    Route::delete('/posts/{id}', [AdminPostController::class, 'destroy'])->name('posts.destroy');
+    Route::post('/complaints/{id}/resolve', [AdminPostController::class, 'resolveComplaint'])->name('complaints.resolve');
 });
 
 require __DIR__.'/auth.php';
