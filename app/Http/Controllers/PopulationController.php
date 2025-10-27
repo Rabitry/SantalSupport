@@ -131,7 +131,8 @@ class PopulationController extends Controller
         }
 
         // Assign logged-in user ID
-        $validated['user_login_id'] = Auth::id();
+       // $validated['user_login_id'] = Auth::id();
+        $validated['user_id'] = Auth::id();
 
         Population::create($validated);
 
