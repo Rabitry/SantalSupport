@@ -17,6 +17,10 @@ class PopulationController extends Controller
     {
         $query = Population::query();
 
+        // $query = Population::withCount(['ratings as ratings_count'])
+        // ->withAvg('ratings as ratings_avg_rating', 'rating')
+        // ->with('user'); 
+
         if ($request->filled('search_college')) {
             $collegeTerm = $request->input('search_college');
             $query->where('college_university', 'LIKE', "%{$collegeTerm}%");

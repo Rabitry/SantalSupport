@@ -70,6 +70,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comments</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
@@ -97,21 +98,43 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <i class="fas fa-comment mr-1"></i> {{ $post->comments->count() }}
                                         </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($post->status === 'published')
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <i class="fas fa-check-circle mr-1"></i> Published
+                                                </span>
+                                            @elseif($post->status === 'draft')
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                    <i class="fas fa-edit mr-1"></i> Draft
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    {{ $post->status }}
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $post->created_at->format('M j, Y') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
                                                 <a href="{{ route('posts.show', $post->id) }}" 
-                                                   class="text-blue-600 hover:text-blue-900">
+                                                   class="text-blue-600 hover:text-blue-900 p-1 rounded"
+                                                   title="View Post">
                                                     <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ route('posts.edit', $post->id) }}" 
+                                                   class="text-green-600 hover:text-green-900 p-1 rounded"
+                                                   title="Edit Post">
+                                                    <i class="fas fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" 
-                                                            class="text-red-600 hover:text-red-900"
-                                                            onclick="return confirm('Are you sure you want to delete this post?')">
+                                                            class="text-red-600 hover:text-red-900 p-1 rounded"
+                                                            onclick="return confirm('Are you sure you want to delete this post?')"
+                                                            title="Delete Post">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>

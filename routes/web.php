@@ -154,6 +154,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\HelpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -191,6 +193,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/population/{id}', [PopulationController::class, 'update'])->name('population.update');
     Route::delete('/population/{id}', [PopulationController::class, 'destroy'])->name('population.destroy');
     Route::get('/population/{id}', [PopulationController::class, 'show'])->name('population.show');
+    //Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store')->middleware('auth');
 
     // Profile Routes (Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -211,6 +214,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Comment Routes
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+
+    // Help Board Routes
+//     Route::prefix('help')->group(function () {
+//     Route::get('/', [HelpController::class, 'index'])->name('help.index');
+//     Route::get('/active', [HelpController::class, 'index'])->name('help.active'); // Alias for active
+//     Route::get('/resolved', [HelpController::class, 'resolved'])->name('help.resolved');
+//     Route::get('/create', [HelpController::class, 'create'])->name('help.create');
+//     Route::post('/', [HelpController::class, 'store'])->name('help.store');
+//     Route::get('/{id}', [HelpController::class, 'show'])->name('help.show');
+//     Route::post('/{id}/offer', [HelpController::class, 'offer'])->name('help.offer');
+//     Route::post('/{requestId}/accept-offer/{offerId}', [HelpController::class, 'acceptOffer'])->name('help.accept-offer');
+//     Route::post('/{id}/resolve', [HelpController::class, 'resolve'])->name('help.resolve');
+//     Route::get('/my/requests', [HelpController::class, 'myRequests'])->name('help.my-requests');
+//     Route::get('/my/offers', [HelpController::class, 'myOffers'])->name('help.my-offers');
+// });
 });
 
 // ==================== ADMIN ROUTES ====================

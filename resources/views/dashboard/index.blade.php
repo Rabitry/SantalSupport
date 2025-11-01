@@ -104,6 +104,7 @@
                     </a>
                     @endif
 
+
                     <!-- User Dropdown -->
                     <div class="relative ml-4 group">
                         <button class="flex items-center space-x-2 text-slate-200 hover:text-white smooth-transition">
